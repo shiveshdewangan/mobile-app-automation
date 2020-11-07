@@ -3,9 +3,10 @@ package PageObjects;
 import Utility.HelperMethods;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
-import io.appium.java_client.pagefactory.*;
 import io.appium.java_client.ios.IOSElement;
+import io.appium.java_client.pagefactory.iOSFindBy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewEventPage extends BasePage {
@@ -99,12 +100,8 @@ public class NewEventPage extends BasePage {
             boolean isFriday = calDateList.get(i).getText().contains("Friday");
             boolean isCalDateAfterToday = (Integer.parseInt(calDateList.get(i).getText().split(" ")[2])) > (i);
 
-            System.out.println("Element - " + calDateList.get(i).getText());
-
             if ((isMonday || isWednesday || isFriday) && isCalDateAfterToday) {
-                System.out.println("Day - " + calDateList.get(i).getText());
                 calDateList.get(i).click();
-                idx = idx + 2;
                 break;
             }
         }

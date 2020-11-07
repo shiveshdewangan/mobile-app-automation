@@ -52,15 +52,15 @@ public class Steps {
         }
     }
 
-    @Then("^I enter the title as \"([^\"]*)\"$")
-    public void i_enter_the_title_as_something(String title) throws Throwable {
+    @Then("^I enter the title as \"([^\"]*)\" and \"([^\"]*)\"$")
+    public void i_enter_the_title_as_something(String title, String sequence) throws Throwable {
         newEventPage = new NewEventPage(driver);
 
         boolean newEventsPageValidation = newEventPage.checkTitleExists();
 
         if (newEventsPageValidation) {
             Assert.assertEquals(newEventsPageValidation, true);
-            newEventPage.enterTitle(title);
+            newEventPage.enterTitle(title + " " + sequence);
         } else {
             Assert.fail("New Events Page did not appear on time");
         }
@@ -112,6 +112,7 @@ public class Steps {
 
     @Then("^I check if the meeting is created as expected$")
     public void i_check_if_the_meeting_is_created_as_expected() throws Throwable {
+        helperMethods.swipeRight(driver);
         helperMethods.swipeRight(driver);
         boolean isMeetingScheduled = homePage.validateMeeting();
         Assert.assertEquals(isMeetingScheduled, true);

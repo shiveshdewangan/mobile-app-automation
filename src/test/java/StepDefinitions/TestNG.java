@@ -163,9 +163,10 @@ public class TestNG {
 //        Date today = new Date();
 //     System.out.println(String.format("Today - " + today, "d-MMMM-YYYY"));
 
-        Calendar now = Calendar.getInstance();
-
-
+        ArrayList myList = new ArrayList(10);
+        myList.add("Shivesh");
+        myList.add(10);
+        System.out.println(myList.size());
     }
 
     //5

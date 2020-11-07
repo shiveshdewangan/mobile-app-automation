@@ -32,7 +32,7 @@ public class HelperMethods {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         HashMap<String, String> scrollObject = new HashMap<String, String>();
         scrollObject.put("direction", "right");
-        scrollObject.put("duration", "10000");
+        scrollObject.put("duration", "5000");
         js.executeScript("mobile: scroll", scrollObject);
     }
 }
