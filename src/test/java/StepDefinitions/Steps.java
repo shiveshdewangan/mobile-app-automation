@@ -1,71 +1,119 @@
 package StepDefinitions;
 
-import PageObjects.HomePage;
-import PageObjects.MenuListPage;
+import PageObjects.*;
+import Utility.HelperMethods;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 import org.testng.Assert;
 
 public class Steps {
 
     public HomePage homePage;
-    public MenuListPage menuListPage;
-    private AndroidDriver<MobileElement> driver;
+    public WelcomePage welcomePage;
+    public NewEventPage newEventPage;
+    public LocationPage locationPage;
+    public RepeatPage repeatPage;
+
+    public HelperMethods helperMethods = new HelperMethods();
+
+    private IOSDriver<MobileElement> driver;
 
     public Steps() {
         this.driver = Hooks.getDriver();
     }
 
     @Given("^I have launched the Calendar App$")
-    public void i_have_launched_the_Calendar_App() throws Exception {
-        System.out.println("Testing");
+    public void i_have_launched_the_Calendar_App() {
+        welcomePage = new WelcomePage(driver);
 
-        homePage = new HomePage(driver);
-        menuListPage = new MenuListPage(driver);
-
-        if (homePage.checkMenuButtonIsDisplayed()) {
-            homePage.clickBurgerMenuButton();
-//            menuListPage.click3Days();
-        } else {
-            Assert.fail("Home Page was not displayed");
+        try {
+            if (welcomePage.checkWhatsNewInCalendarTextExist()) {
+                welcomePage.clickContinueButton();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    @When("^It is not a non working day$")
-    public void it_is_not_a_non_working_day() throws Exception {
-        System.out.println("Testing");
+    @Then("^I click on the Plus Button$")
+    public void i_click_on_the_plus_button() throws Throwable {
+        homePage = new HomePage(driver);
+
+        boolean homePageValidation = homePage.isPlusButtonDisplayed();
+
+        if (homePageValidation) {
+            Assert.assertEquals(homePageValidation, true);
+            homePage.clickPlusButton();
+        } else {
+            Assert.fail("Home Page did not appear on time");
+        }
     }
 
-    @When("^Meeting is not repeated on successive days$")
-    public void meeting_is_not_repeated_on_successive_days() throws Exception {
-        System.out.println("Testing");
+    @Then("^I enter the title as \"([^\"]*)\"$")
+    public void i_enter_the_title_as_something(String title) throws Throwable {
+        newEventPage = new NewEventPage(driver);
+
+        boolean newEventsPageValidation = newEventPage.checkTitleExists();
+
+        if (newEventsPageValidation) {
+            Assert.assertEquals(newEventsPageValidation, true);
+            newEventPage.enterTitle(title);
+        } else {
+            Assert.fail("New Events Page did not appear on time");
+        }
     }
 
-    @Then("^I want to book a meeting with the title “Recurring-Team Catch Up”$")
-    public void i_want_to_book_a_meeting_with_the_title_Recurring_Team_Catch_Up() throws Exception {
-        System.out.println("Testing");
+    @And("^I enter the location as \"([^\"]*)\"$")
+    public void i_enter_the_location_as_something(String location) throws Throwable {
+        newEventPage.clickLocationField();
+        locationPage = new LocationPage(driver);
+        locationPage.enterLocation(location);
     }
 
-    @Then("^Set Meeting duration as \"([^\"]*)\" in the evening$")
-    public void set_Meeting_duration_as_in_the_evening(String duration_of_meeting) throws Exception {
-        System.out.println("Testing");
+    @Then("^I set the Start Time as \"([^\"]*)\"$")
+    public void i_set_the_start_time_as_something(String start_time) throws Throwable {
+        newEventPage.clickStartsTab();
+        newEventPage.enterTime(start_time);
+        newEventPage.selectPM();
     }
 
-    @Then("^I invite \"([^\"]*)\" of people$")
-    public void i_invite_of_people(String number_of_people) throws Exception {
-        System.out.println("Testing");
+    @Then("^I select a week day for the meeting as per \"([^\"]*)\"$")
+    public void i_select_a_week_day_for_the_meeting_as_per_something(String iteration) {
+        newEventPage.selectWeekdayForMeeting(iteration);
+        newEventPage.clickStartsTab();
+    }
+
+    @And("^I check the \"([^\"]*)\" of the meeting$")
+    public void i_check_the_something_of_the_meeting(String end_time) throws Throwable {
+        newEventPage.clickEndsTab();
+        String endTime = newEventPage.getEndTime();
+        Assert.assertEquals(endTime, "0" + end_time + ":00");
+    }
+
+    @Then("^I set weekly \"([^\"]*)\" of the meeting$")
+    public void i_set_weekly_something_of_the_meeting(String frequency) throws Throwable {
+        newEventPage.clickRepeatLink();
+        repeatPage = new RepeatPage(driver);
+
+        if (frequency.equalsIgnoreCase("Weekly")) {
+            repeatPage.clickEveryWeekOption();
+        }
+
+        Assert.assertEquals(newEventPage.getSelectedWeeklyText(), frequency);
     }
 
     @Then("^I save the meeting$")
-    public void i_save_the_meeting() throws Exception {
-        System.out.println("Testing");
+    public void i_save_the_meeting() {
+        newEventPage.clickAddButton();
     }
 
-    @Then("^I Check if the meeting is created as expected$")
-    public void i_Check_if_the_meeting_is_created_as_expected() throws Exception {
-        System.out.println("Testing");
+    @Then("^I check if the meeting is created as expected$")
+    public void i_check_if_the_meeting_is_created_as_expected() throws Throwable {
+        helperMethods.swipeRight(driver);
+        boolean isMeetingScheduled = homePage.validateMeeting();
+        Assert.assertEquals(isMeetingScheduled, true);
     }
 }

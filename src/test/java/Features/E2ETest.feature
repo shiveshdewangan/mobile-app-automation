@@ -1,15 +1,18 @@
-Feature: End to End Automation Testing of Google Calendar Application
+Feature: iOS Calendar Application
 
-  Scenario Outline: Create a new recurring(3 days a week) meeting, and make
-  sure it doesn't repeat on successive days
+  Scenario Outline: Create a new recurring (3 days a week) meeting that doesn't repeat on successive days
     Given I have launched the Calendar App
-    When It is not a non working day
-    And Meeting is not repeated on successive days
-    Then I want to book a meeting with the title “Recurring-Team Catch Up”
-    And Set Meeting duration as "<Duration>" in the evening
-    And I invite "<Number>" of people
+    Then I click on the Plus Button
+    Then I enter the title as "<Title>"
+    And I enter the location as "<Location>"
+    Then I set the Start Time as "<StartTime>"
+    Then I select a week day for the meeting as per "<Iteration>"
+    And I check the "<EndTime>" of the meeting
+    Then I set weekly "<Frequency>" of the meeting
     And I save the meeting
-    Then I Check if the meeting is created as expected
+    Then I check if the meeting is created as expected
     Examples:
-    | Duration | Number |
-    | 2        | 3      |
+      | Title                   | Location | StartTime | EndTime | Frequency | Iteration |
+      | Recurring-Team Catch Up | Sydney   | 600       | 7       | Weekly    | 0         |
+#      | Recurring-Team Catch Up | Sydney   | 600       | 7       | Weekly    | 1         |
+#      | Recurring-Team Catch Up | Sydney   | 600       | 7       | Weekly    | 2         |

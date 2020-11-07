@@ -1,23 +1,31 @@
 package PageObjects;
 
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.pagefactory.AndroidFindBy;
+import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.pagefactory.*;
+import io.appium.java_client.ios.IOSElement;
 
 public class HomePage extends BasePage {
 
-    @AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.ImageButton\").content-desc(\"Show Calendar List and Settings drawer\").index(0)")
-    public MobileElement menuBtn;
+    @iOSFindBy(xpath = "//XCUIElementTypeButton[@name=\"Add\"]\n")
+    public IOSElement plusBtn;
 
-    public HomePage(AndroidDriver<MobileElement> driver) {
+    @iOSFindBy(xpath = "//XCUIElementTypeButton[@name=\"Recurring-Team Catch Up, Sydney, from 6:00 PM to 7:00 PM\"]\n")
+    public IOSElement meetingDetails;
+
+    public HomePage(IOSDriver<MobileElement> driver) {
         super(driver);
     }
 
-    public Boolean checkMenuButtonIsDisplayed() {
-        return menuBtn.isDisplayed();
+    public boolean isPlusButtonDisplayed(){
+        return plusBtn.isDisplayed();
     }
 
-    public void clickBurgerMenuButton() {
-        menuBtn.click();
+    public void clickPlusButton() {
+        plusBtn.click();
+    }
+
+    public boolean validateMeeting() {
+        return meetingDetails.isDisplayed();
     }
 }
