@@ -16,8 +16,8 @@ Technology used - Java, Appium, Cucumber, Maven, iOS, XCode
 
 *Please make sure you have **Java** and **Maven** installed and configured on your system.*
 
-- `git clone https://github.com/shiveshdewangan/mobile-app-automation.git`
 - `Open a Terminal window`
+- `git clone https://github.com/shiveshdewangan/mobile-app-automation.git`
 - `cd mobile-app-automation`
 - `mvn clean test`
 
