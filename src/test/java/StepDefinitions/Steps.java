@@ -2,6 +2,7 @@ package StepDefinitions;
 
 import PageObjects.*;
 import Utility.HelperMethods;
+import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -112,9 +113,19 @@ public class Steps {
 
     @Then("^I check if the meeting is created as expected$")
     public void i_check_if_the_meeting_is_created_as_expected() throws Throwable {
-        helperMethods.swipeRight(driver);
-        helperMethods.swipeRight(driver);
-        boolean isMeetingScheduled = homePage.validateMeeting();
-        Assert.assertEquals(isMeetingScheduled, true);
+
+        boolean isVisible = false;
+
+        while (!isVisible) {
+            helperMethods.swipeRight(driver);
+            isVisible = homePage.validateMeeting();
+        }
+
+        try {
+            boolean isMeetingScheduled = homePage.validateMeeting();
+            Assert.assertEquals(isMeetingScheduled, true);
+        } catch (ElementNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

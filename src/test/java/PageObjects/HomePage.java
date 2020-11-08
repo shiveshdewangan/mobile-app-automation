@@ -10,14 +10,14 @@ public class HomePage extends BasePage {
     @iOSFindBy(xpath = "//XCUIElementTypeButton[@name=\"Add\"]\n")
     public IOSElement plusBtn;
 
-    @iOSFindBy(xpath = "//XCUIElementTypeButton[@name=\"Recurring-Team Catch Up 0, Sydney, from 6:00 PM to 7:00 PM\"]\n")
+    @iOSFindBy(xpath = "//XCUIElementTypeButton[@name=\"Recurring-Team Catch Up First, Sydney, from 6:00 PM to 7:00 PM\"]\n")
     public IOSElement meetingDetails;
 
     public HomePage(IOSDriver<MobileElement> driver) {
         super(driver);
     }
 
-    public boolean isPlusButtonDisplayed(){
+    public boolean isPlusButtonDisplayed() {
         return plusBtn.isDisplayed();
     }
 

@@ -1,9 +1,12 @@
 package StepDefinitions;
 
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.BeforeMethod;
 
@@ -39,7 +42,11 @@ public class Hooks {
     }
 
     @After
-    public void cleanup() {
+    public void cleanup(Scenario scenario) {
+        if (scenario.isFailed()) {
+            final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+            scenario.embed(screenshot, "image/png");
+        }
         driver.quit();
     }
 
